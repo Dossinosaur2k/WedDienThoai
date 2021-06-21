@@ -1,0 +1,76 @@
+﻿
+@using PagedList.Mvc
+@model PagedList.IPagedList<ModelEF.Model.Sanpham>
+
+
+@{
+    ViewBag.Title = "Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Header{
+    <i class="fa fa-user">    </i>  &nbsp;    Quản lý Sản Phẩm
+}
+
+@using (Html.BeginForm())
+{
+    <div class="col-lg-12 form-group">
+        <div class="col-md-6 ">
+            @Html.ActionLink("Tạo mới", "Create", "Product", new { @class = "btn btn-danger" })
+        </div>
+        <div class="col-md-4 ">
+            <input tyoe="text" value="@ViewBag.SearchString" name="searchString" placeholder="Nhập từ khóa tìm kiếm" class="form-control" />
+        </div>
+        <div class=" col-md-2">
+            <input type="submit" value="Tìm kiếm" class="btn btn-default" />
+        </div>
+    </div>
+}
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
+            <th>
+                Mã Hàng
+            </th>
+            <th>
+                Tên Hàng
+            </th>
+            <th>
+                Đơn Giá
+            </th>
+            <th>
+                Số Lượng
+            </th>
+            <th>
+                Loại sp
+            </th>
+            <th>
+                Thao tác
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Masp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tensp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Giatien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mahang)
+                </td>
+                <td>
+                    <a href="~/Admin/Product/Detail/@item.Masp"> <i class="alert-warning" > Chi Tiết </i></a>
+                </td>
+                <td></td>
+            </tr>
+        }
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }))
+    </table>
